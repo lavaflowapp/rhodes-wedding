@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="A&H Wedding">
+<meta name="theme-color" content="#4a2e26">
+<title>Aaron & Hannah — Wedding Planner</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ivory: #faf7f2;
+  --cream: #f3ede3;
+  --sand: #e8ddd0;
+  --rose: #a06c5e;
+  --deep: #4a2e26;
+  --gold: #c4a265;
+  --gold-light: #e8d5b0;
+  --text: #2c1f1a;
+  --muted: #8a7060;
+  --green: #5a7a5a;
+  --green-light: #eaf2ea;
+  --nav-h: 60px;
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sat: env(safe-area-inset-top, 0px);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { height: 100%; }
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--ivory);
+  color: var(--text);
+  height: 100%;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+.app { display: flex; flex-direction: column; height: 100dvh; height: 100vh; }
+
+/* HERO */
+.hero {
+  background: linear-gradient(150deg, var(--deep) 0%, #6b3d32 55%, var(--rose) 100%);
+  padding: calc(var(--sat) + 1rem) 1.25rem 1.25rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='1' fill='%23ffffff' fill-opacity='0.06'/%3E%3C/svg%3E");
+}
+.hero-eyebrow { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.3rem; position: relative; }
+.hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 1.85rem; font-weight: 300; color: white; line-height: 1.1; position: relative; }
+.hero h1 em { font-style: italic; color: var(--gold-light); }
+.hero-sub { font-size: 0.68rem; color: var(--sand); letter-spacing: 0.05em; margin-top: 0.2rem; position: relative; }
+.cd-row { display: flex; justify-content: center; gap: 1.5rem; margin-top: 0.85rem; position: relative; }
+.cd-item { text-align: center; }
+.cd-num { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 600; color: var(--gold); display: block; line-height: 1; }
+.cd-lbl { font-size: 0.5rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sand); }
+
+/* SCROLL AREA */
+.content { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: calc(var(--nav-h) + var(--sab) + 0.5rem); }
+
+/* PAGES */
+.page { display: none; padding: 0.9rem; }
+.page.active { display: block; }
+
+/* SECTION HEADER */
+.sh { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.9rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--sand); }
+.sh h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 400; color: var(--deep); flex: 1; }
+.badge { background: var(--gold); color: white; font-size: 0.58rem; font-weight: 500; padding: 0.12rem 0.5rem; border-radius: 20px; white-space: nowrap; }
+
+/* NOTE BOX */
+.nb { background: var(--gold-light); border-left: 3px solid var(--gold); padding: 0.75rem 0.9rem; border-radius: 0 8px 8px 0; font-size: 0.8rem; color: var(--deep); margin-bottom: 0.9rem; line-height: 1.5; }
+.nb.tip { background: var(--green-light); border-left-color: var(--green); }
+
+/* OVERVIEW CARDS */
+.ov-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin-bottom: 0.9rem; }
+.ov-card { background: white; border: 1px solid var(--sand); border-radius: 12px; padding: 0.8rem; position: relative; overflow: hidden; }
+.ov-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gold); }
+.ov-card.rose::before { background: var(--rose); }
+.ov-card.green::before { background: var(--green); }
+.ov-card.blue::before { background: #5a7a9a; }
+.ov-lbl { font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.25rem; }
+.ov-in { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; color: var(--deep); border: none; border-bottom: 2px dashed var(--sand); background: transparent; width: 100%; padding: 0; min-width: 0; }
+.ov-in:focus { outline: none; border-bottom-color: var(--gold); }
+.ov-note { font-size: 0.62rem; color: var(--muted); border: none; background: transparent; width: 100%; padding: 0.1rem 0 0; font-family: 'Jost', sans-serif; min-width: 0; }
+.ov-note:focus { outline: none; }
+
+/* DATES */
+.dates-card { background: white; border: 1px solid var(--sand); border-radius: 12px; overflow: hidden; margin-bottom: 0.9rem; }
+.dr { display: flex; justify-content: space-between; align-items: flex-start; padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--cream); font-size: 0.8rem; gap: 0.5rem; }
+.dr:last-child { border-bottom: none; }
+.dr .dl { color: var(--muted); flex-shrink: 0; font-size: 0.76rem; }
+.dr .dv { font-weight: 500; text-align: right; }
+
+/* BUDGET CARDS */
+.blist { display: flex; flex-direction: column; gap: 0.55rem; margin-bottom: 0.9rem; }
+.bcard { background: white; border: 1px solid var(--sand); border-radius: 12px; padding: 0.8rem 0.9rem; position: relative; }
+.bcard-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.4rem; margin-bottom: 0.5rem; }
+.bcard-meta { flex: 1; min-width: 0; }
+.bcat-in { font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); border: none; background: transparent; width: 100%; font-family: 'Jost', sans-serif; padding: 0; display: block; }
+.bcat-in:focus { outline: none; }
+.bitem-in { font-size: 0.88rem; font-family: 'Jost', sans-serif; color: var(--text); border: none; background: transparent; width: 100%; font-weight: 500; padding: 0.1rem 0 0; display: block; }
+.bitem-in:focus { outline: none; border-bottom: 1px solid var(--gold); }
+.spill { border: 1px solid var(--sand); border-radius: 20px; padding: 0.18rem 0.6rem; font-family: 'Jost', sans-serif; font-size: 0.62rem; cursor: pointer; background: white; white-space: nowrap; flex-shrink: 0; -webkit-appearance: none; appearance: none; }
+.spill:focus { outline: none; }
+.sp-e { background: var(--cream); color: var(--muted); border-color: var(--sand); }
+.sp-q { background: #fef3e2; color: #c47a1e; border-color: #f5c98a; }
+.sp-l { background: var(--green-light); color: var(--green); border-color: #b0d4b0; }
+.bamts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.35rem; margin-bottom: 0.5rem; }
+.af { text-align: center; }
+.af-lbl { font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 0.1rem; }
+.af-in { width: 100%; text-align: center; border: 1px solid var(--sand); border-radius: 6px; padding: 0.3rem 0.2rem; font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; background: var(--cream); color: var(--text); min-width: 0; }
+.af-in:focus { outline: 2px solid var(--gold); background: white; }
+.af-in.locked { background: var(--green-light); border-color: #b0d4b0; font-weight: 600; }
+.bnotes { width: 100%; border: none; border-top: 1px solid var(--cream); padding: 0.35rem 0 0; font-size: 0.72rem; color: var(--muted); font-family: 'Jost', sans-serif; background: transparent; }
+.bnotes:focus { outline: none; color: var(--text); }
+.bdel { position: absolute; top: 0.55rem; right: 0.55rem; background: none; border: none; color: #ddd; font-size: 1.1rem; cursor: pointer; padding: 0.15rem 0.25rem; line-height: 1; }
+.bdel:active { color: #c0392b; }
+
+/* TOTAL BAR */
+.tbar { background: var(--deep); border-radius: 12px; padding: 0.9rem 1rem; margin-bottom: 0.9rem; }
+.tbar-row { display: flex; justify-content: space-between; align-items: baseline; padding: 0.25rem 0; }
+.tbar-row + .tbar-row { border-top: 1px solid rgba(255,255,255,0.1); margin-top: 0.25rem; padding-top: 0.5rem; }
+.tbl { font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sand); }
+.tnum { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; color: var(--gold); font-weight: 600; }
+
+.add-btn { width: 100%; background: none; border: 1.5px dashed var(--sand); color: var(--muted); font-family: 'Jost', sans-serif; font-size: 0.8rem; padding: 0.65rem; border-radius: 10px; cursor: pointer; margin-bottom: 0.9rem; }
+.add-btn:active { border-color: var(--gold); color: var(--gold); }
+.reset-lnk { display: block; text-align: center; font-size: 0.72rem; color: var(--muted); cursor: pointer; text-decoration: underline; margin-bottom: 1.25rem; }
+
+/* COMPARE */
+.cmp-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; border: 1px solid var(--sand); margin-bottom: 1rem; }
+.cmp-tbl { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 320px; }
+.cmp-tbl th { padding: 0.6rem 0.8rem; text-align: left; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); background: var(--cream); border-bottom: 1px solid var(--sand); }
+.cmp-tbl th.cg { color: var(--gold); }
+.cmp-tbl td { padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--cream); vertical-align: top; }
+.cmp-tbl tr:last-child td { border-bottom: none; }
+.fn { font-weight: 500; color: var(--deep); }
+.win { color: var(--green); font-weight: 500; }
+
+/* CHECKLIST */
+.phase-block { background: white; border: 1px solid var(--sand); border-radius: 12px; overflow: hidden; margin-bottom: 0.65rem; }
+.phase-hd { background: var(--deep); color: white; padding: 0.7rem 0.9rem; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; user-select: none; -webkit-user-select: none; }
+.phase-hd h3 { font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; font-weight: 400; flex: 1; }
+.phase-prog { font-size: 0.65rem; color: var(--gold); }
+.phase-chev { font-size: 0.65rem; color: var(--sand); transition: transform 0.2s; display: inline-block; }
+.phase-hd.open .phase-chev { transform: rotate(180deg); }
+.phase-items { display: none; }
+.phase-items.open { display: block; }
+.ci { display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.7rem 0.9rem; border-bottom: 1px solid var(--cream); cursor: pointer; -webkit-user-select: none; user-select: none; }
+.ci:last-child { border-bottom: none; }
+.ci:active { background: var(--cream); }
+.ci input[type=checkbox] { width: 20px; height: 20px; margin-top: 1px; accent-color: var(--rose); flex-shrink: 0; cursor: pointer; }
+.ci label { font-size: 0.85rem; line-height: 1.4; color: var(--text); flex: 1; cursor: pointer; pointer-events: none; }
+.ci input:checked ~ label { color: var(--muted); text-decoration: line-through; }
+.cp { font-size: 0.55rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.12rem 0.4rem; border-radius: 20px; flex-shrink: 0; margin-top: 2px; pointer-events: none; }
+.pu { background: #fde8e8; color: #c0392b; }
+.ph { background: #fef3e2; color: #e67e22; }
+.pn { background: var(--cream); color: var(--muted); }
+
+/* INFO CARDS */
+.ic { background: white; border: 1px solid var(--sand); border-radius: 12px; padding: 0.9rem; margin-bottom: 0.65rem; }
+.ic h3 { font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; color: var(--deep); margin-bottom: 0.7rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--sand); }
+.ir { display: flex; justify-content: space-between; align-items: flex-start; padding: 0.38rem 0; font-size: 0.8rem; border-bottom: 1px solid var(--cream); gap: 0.5rem; }
+.ir:last-child { border-bottom: none; }
+.il { color: var(--muted); flex-shrink: 0; font-size: 0.76rem; }
+.iv { font-weight: 500; text-align: right; font-size: 0.8rem; }
+.contact-card { background: var(--deep); color: white; border-radius: 12px; padding: 0.9rem; margin-bottom: 0.65rem; }
+.contact-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; color: var(--gold-light); margin-bottom: 0.5rem; }
+.contact-card p { font-size: 0.8rem; color: var(--sand); margin-bottom: 0.2rem; }
+.contact-card p strong { color: white; }
+.contact-card a { color: var(--gold); text-decoration: none; }
+.pill { display: inline-block; font-size: 0.62rem; padding: 0.15rem 0.5rem; border-radius: 20px; font-weight: 500; }
+.pill-gold { background: var(--gold-light); color: var(--deep); }
+.pill-rose { background: #f5e8e5; color: var(--rose); }
+.pill-green { background: var(--green-light); color: var(--green); }
+
+/* TIPS */
+.tip-card { background: white; border: 1px solid var(--sand); border-radius: 12px; padding: 0.9rem; margin-bottom: 0.65rem; }
+.ti { font-size: 1.2rem; display: block; margin-bottom: 0.35rem; }
+.tip-card h4 { font-family: 'Cormorant Garamond', serif; font-size: 0.92rem; color: var(--deep); margin-bottom: 0.3rem; font-weight: 600; }
+.tip-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+/* NOTES */
+.note-compose { background: white; border: 1px solid var(--sand); border-radius: 12px; padding: 0.85rem; margin-bottom: 0.75rem; }
+.note-compose select, .note-compose textarea { width: 100%; border: 1px solid var(--sand); border-radius: 8px; padding: 0.5rem 0.7rem; font-family: 'Jost', sans-serif; font-size: 0.875rem; background: var(--cream); color: var(--text); margin-bottom: 0.55rem; -webkit-appearance: none; appearance: none; }
+.note-compose textarea { min-height: 80px; resize: none; }
+.note-compose select:focus, .note-compose textarea:focus { outline: 2px solid var(--gold); }
+.nbtns { display: flex; gap: 0.5rem; }
+.btn { background: var(--deep); color: white; border: none; padding: 0.65rem 1rem; border-radius: 8px; font-family: 'Jost', sans-serif; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; flex: 1; -webkit-appearance: none; }
+.btn:active { background: var(--rose); }
+.btn-out { background: none; color: var(--deep); border: 1px solid var(--deep); flex: 0; padding: 0.65rem 0.9rem; }
+.btn-out:active { background: var(--deep); color: white; }
+.ne { background: white; border: 1px solid var(--sand); border-radius: 10px; padding: 0.75rem 2.25rem 0.75rem 0.85rem; margin-bottom: 0.55rem; font-size: 0.81rem; line-height: 1.5; position: relative; }
+.ne-meta { font-size: 0.62rem; color: var(--muted); margin-bottom: 0.25rem; }
+.del-note { position: absolute; top: 0.6rem; right: 0.65rem; background: none; border: none; color: #ccc; cursor: pointer; font-size: 1rem; line-height: 1; padding: 0.15rem; }
+.del-note:active { color: #c0392b; }
+
+/* BOTTOM NAV */
+.bnav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--deep); display: flex; height: calc(var(--nav-h) + var(--sab)); padding-bottom: var(--sab); box-shadow: 0 -2px 20px rgba(74,46,38,0.4); z-index: 999; }
+.nb-btn { flex: 1; background: none; border: none; color: rgba(255,255,255,0.45); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.18rem; cursor: pointer; padding: 0; position: relative; }
+.nb-btn.active { color: var(--gold); }
+.nb-btn.active::after { content: ''; position: absolute; top: 0; left: 15%; right: 15%; height: 2px; background: var(--gold); border-radius: 0 0 2px 2px; }
+.nb-icon { font-size: 1.15rem; line-height: 1; }
+.nb-lbl { font-size: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase; font-family: 'Jost', sans-serif; }
+
+.mt1 { margin-top: 0.9rem; }
+.sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); display: inline-block; margin-left: 4px; vertical-align: middle; }
+.sync-dot.syncing { animation: pulse 1s infinite; background: #c47a1e; }
+.sync-dot.error { background: #c0392b; }
+.sync-dot.ok { background: var(--green); }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.hero-top { display: flex; justify-content: flex-end; margin-bottom: 0.4rem; position: relative; }
+.sync-badge { display: flex; align-items: center; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sand); gap: 0.25rem; }
+.loading-screen { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 0.75rem; padding: 2.5rem; color: var(--muted); font-size: 0.85rem; }
+.spin { width: 24px; height: 24px; border: 3px solid var(--sand); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
+
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="hero">
+  <div class="hero-top"><div class="sync-badge">Sync<span class="sync-dot" id="syncDot"></span></div></div>
+  <div class="hero-eyebrow">Saturday · April 17, 2027 · Fajardo, PR</div>
+  <h1>Aaron <em>&</em> Hannah</h1>
+  <p class="hero-sub">El Conquistador Resort · Las Casitas Village</p>
+  <div class="cd-row">
+    <div class="cd-item"><span class="cd-num" id="cd-d">—</span><span class="cd-lbl">Days</span></div>
+    <div class="cd-item"><span class="cd-num" id="cd-m">—</span><span class="cd-lbl">Months</span></div>
+    <div class="cd-item"><span class="cd-num" id="cd-w">—</span><span class="cd-lbl">Weeks</span></div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- OVERVIEW -->
+  <div class="page active" id="page-overview">
+    <div class="sh"><h2>At a Glance</h2><span class="badge">30 Guests</span></div>
+    <div class="ov-grid">
+      <div class="ov-card"><div class="ov-lbl">Catering (Quoted)</div><input class="ov-in" id="ov1" value="$14,557" oninput="saveOv()"><input class="ov-note" id="ov1n" value="Silver pkg · update after negotiation" oninput="saveOv()"></div>
+      <div class="ov-card rose"><div class="ov-lbl">Rooms (You Pay)</div><input class="ov-in" id="ov2" value="~$12,000" oninput="saveOv()"><input class="ov-note" id="ov2n" value="15 rms · 2 nts · ~$400/nt" oninput="saveOv()"></div>
+      <div class="ov-card green"><div class="ov-lbl">Other Vendors</div><input class="ov-in" id="ov3" value="~$9,400" oninput="saveOv()"><input class="ov-note" id="ov3n" value="Photo, florals, music, cake…" oninput="saveOv()"></div>
+      <div class="ov-card blue"><div class="ov-lbl">Grand Total</div><input class="ov-in" id="ov4" value="~$36–52K" oninput="saveOv()"><input class="ov-note" id="ov4n" value="Update as quotes come in" oninput="saveOv()"></div>
+    </div>
+    <div class="nb"><strong>Site Visit — May 2025:</strong> Bring a competing quote from Wyndham Grand Rio Mar. Key asks: reduce 23% service fee, waive bartender fee, mix hors d'oeuvres across packages, comp bridal suite, waive resort fees on all rooms.</div>
+    <div class="sh mt1"><h2>Key Dates</h2></div>
+    <div class="dates-card">
+      <div class="dr"><span class="dl">Wedding Day</span><span class="dv">Sat, April 17, 2027</span></div>
+      <div class="dr"><span class="dl">Site Visit</span><span class="dv">May 2025 — TBD</span></div>
+      <div class="dr"><span class="dl">Initial Deposit</span><span class="dv">$2,500 at signing</span></div>
+      <div class="dr"><span class="dl">60-Day Deposit</span><span class="dv">~Feb 15, 2027</span></div>
+      <div class="dr"><span class="dl">Final Balance</span><span class="dv">~Mar 17, 2027</span></div>
+      <div class="dr"><span class="dl">Room Cutoff</span><span class="dv">Negotiate 45–60 days prior</span></div>
+      <div class="dr"><span class="dl">Blood Tests (PR)</span><span class="dv">Within 10 days of ceremony</span></div>
+    </div>
+  </div>
+
+  <!-- BUDGET -->
+  <div class="page" id="page-budget">
+    <div class="sh"><h2>Budget Tracker</h2><span class="badge" id="b-badge">—</span></div>
+    <div class="nb" style="font-size:0.77rem;">Tap any field to edit. <strong>Quoted</strong> = you have a real number. <strong>Locked ✓</strong> = signed/confirmed.</div>
+    <div class="blist" id="blist"><div class="loading-screen"><div class="spin"></div><span>Loading...</span></div></div>
+    <button class="add-btn" onclick="addRow()">+ Add Line Item</button>
+    <div class="tbar">
+      <div class="tbar-row"><span class="tbl">Quoted + Locked</span><span class="tnum" id="tb1">$0</span></div>
+      <div class="tbar-row"><span class="tbl">Full Range</span><span class="tnum" style="font-size:1rem;" id="tb2">$0 – $0</span></div>
+    </div>
+    <span class="reset-lnk" onclick="resetBudget()">Reset to default estimates</span>
+    <div class="sh"><h2>Package Comparison</h2></div>
+    <div class="cmp-wrap">
+      <table class="cmp-tbl">
+        <thead><tr><th>Feature</th><th>Silver</th><th class="cg">Gold ✦</th></tr></thead>
+        <tbody>
+          <tr><td class="fn">Total (30 guests)</td><td>$14,557</td><td class="win">$16,109</td></tr>
+          <tr><td class="fn">Per Person</td><td>~$485</td><td>~$537</td></tr>
+          <tr><td class="fn">Open Bar</td><td>House brands</td><td class="win">Premium brands</td></tr>
+          <tr><td class="fn">Toast</td><td>Prosecco</td><td class="win">Champagne</td></tr>
+          <tr><td class="fn">Top Entrée</td><td>Churrasco</td><td class="win">Filet Mignon</td></tr>
+          <tr><td class="fn">Appetizers</td><td>Latin-inspired</td><td class="win">Upscale/Seafood</td></tr>
+          <tr><td class="fn">Sig. Drink</td><td>3 options</td><td class="win">4 (+Mango Margarita)</td></tr>
+          <tr><td colspan="3" style="color:var(--muted);font-size:0.75rem;">~$1,552 difference — mainly filet vs. churrasco entrée</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CHECKLIST -->
+  <div class="page" id="page-checklist">
+    <div class="sh"><h2>Checklist</h2></div>
+
+    <div class="phase-block">
+      <div class="phase-hd open" onclick="togglePhase(this)"><h3>Now → Site Visit</h3><span class="phase-prog" id="prog-1"></span><span class="phase-chev">▼</span></div>
+      <div class="phase-items open" id="phase-1">
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Confirm site visit date with Zoraida Garcia</label><span class="cp pu">Urgent</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Get competing quote from Wyndham Grand Rio Mar</label><span class="cp pu">Urgent</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Decide Silver vs. Gold (or negotiate hybrid menu)</label><span class="cp ph">High</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Research wedding photographers in Puerto Rico</label><span class="cp ph">High</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Send save-the-dates (12–18 months out ideal)</label><span class="cp ph">High</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Set overall budget and priority areas</label><span class="cp pn">Normal</span></label>
+      </div>
+    </div>
+
+    <div class="phase-block">
+      <div class="phase-hd" onclick="togglePhase(this)"><h3>After Site Visit — Contract</h3><span class="phase-prog" id="prog-2"></span><span class="phase-chev">▼</span></div>
+      <div class="phase-items" id="phase-2">
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Sign El Con catering contract (negotiate fees)</label><span class="cp pu">Urgent</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Pay $2,500 initial deposit</label><span class="cp pu">Urgent</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Negotiate room block (15–20 rms, 15–20% off rack)</label><span class="cp pu">Urgent</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Get comp bridal suite + resort fee waiver</label><span class="cp ph">High</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Book photographer</label><span class="cp ph">High</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Book DJ or live music</label><span class="cp ph">High</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Book officiant / confirm PR license requirements</label><span class="cp ph">High</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Start wedding website (The Knot, Zola, etc.)</label><span class="cp pn">Normal</span></label>
+      </div>
+    </div>
+
+    <div class="phase-block">
+      <div class="phase-hd" onclick="togglePhase(this)"><h3>6–9 Months Out</h3><span class="phase-prog" id="prog-3"></span><span class="phase-chev">▼</span></div>
+      <div class="phase-items" id="phase-3">
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Pre-select entrée, salad, soup (required by El Con)</label><span class="cp ph">High</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Finalize hors d'oeuvres (negotiate custom mix)</label><span class="cp ph">High</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Order wedding invitations (send 8 weeks out)</label><span class="cp pn">Normal</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Book florist</label><span class="cp pn">Normal</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Plan rehearsal dinner venue</label><span class="cp pn">Normal</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Book airport transportation / shuttles</label><span class="cp pn">Normal</span></label>
+      </div>
+    </div>
+
+    <div class="phase-block">
+      <div class="phase-hd" onclick="togglePhase(this)"><h3>3–4 Months Out</h3><span class="phase-prog" id="prog-4"></span><span class="phase-chev">▼</span></div>
+      <div class="phase-items" id="phase-4">
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Pay 60-day deposit (~$6,029–$6,805)</label><span class="cp pu">Urgent</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Confirm final guest count with El Con</label><span class="cp ph">High</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Collect RSVPs + meal selections from guests</label><span class="cp ph">High</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Schedule food tasting at El Con (45–60 days prior)</label><span class="cp ph">High</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Order wedding cake / connect with bakery</label><span class="cp pn">Normal</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Buy wedding rings</label><span class="cp pn">Normal</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Begin PR marriage license process</label><span class="cp ph">High</span></label>
+      </div>
+    </div>
+
+    <div class="phase-block">
+      <div class="phase-hd" onclick="togglePhase(this)"><h3>Final Month</h3><span class="phase-prog" id="prog-5"></span><span class="phase-chev">▼</span></div>
+      <div class="phase-items" id="phase-5">
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Pay final balance to El Con (30 days prior)</label><span class="cp pu">Urgent</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Confirm all vendor day-of timelines</label><span class="cp ph">High</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Blood tests for PR marriage license (within 10 days!)</label><span class="cp pu">Urgent</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Confirm seating chart with El Con catering</label><span class="cp pn">Normal</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Write vows</label><span class="cp pn">Normal</span></label>
+        <label class="ci"><input type="checkbox" onchange="upProg()"><label>Pack and travel — enjoy every moment! 🌴</label><span class="cp pn">Normal</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- VENUE -->
+  <div class="page" id="page-venue">
+    <div class="sh"><h2>El Conquistador</h2><span class="badge">Fajardo, PR</span></div>
+    <div class="contact-card">
+      <h3>Catering Contact</h3>
+      <p><strong>Zoraida Garcia</strong> · Catering Manager</p>
+      <p>📞 <a href="tel:+17878631000">787-863-1000 x6611</a></p>
+      <p>✉️ <a href="/cdn-cgi/l/email-protection#9ee4f9ffecfdf7ffdefbf2fdf1f0ecfbedf1eceab0fdf1f3"><span class="__cf_email__" data-cfemail="1e64797f6c7d777f5e7b727d71706c7b6d716c6a307d7173">[email&#160;protected]</span></a></p>
+    </div>
+    <div class="ic"><h3>Ceremony — Casitas Gardens</h3>
+      <div class="ir"><span class="il">Fee</span><span class="iv">$2,000</span></div>
+      <div class="ir"><span class="il">Includes</span><span class="iv">White chairs, minister table, water station</span></div>
+      <div class="ir"><span class="il">Note</span><span class="iv">Additional décor on your own</span></div>
+    </div>
+    <div class="ic"><h3>Cocktail — Mirador Terrace</h3>
+      <div class="ir"><span class="il">Duration</span><span class="iv">1 hour · Outdoor</span></div>
+      <div class="ir"><span class="il">Includes</span><span class="iv">3 hors d'oeuvres, 1 signature drink, sparkling toast</span></div>
+    </div>
+    <div class="ic"><h3>Dinner Reception</h3>
+      <div class="ir"><span class="il">Includes</span><span class="iv">Tables, chairs, linen, dance floor, stage</span></div>
+      <div class="ir"><span class="il">Dinner</span><span class="iv">3-course plated + coffee</span></div>
+      <div class="ir"><span class="il">Bar</span><span class="iv">5-hour open bar</span></div>
+      <div class="ir"><span class="il">Duo option</span><span class="iv">+$15/person for 2nd entrée</span></div>
+    </div>
+    <div class="ic"><h3>Room Block (You Pay)</h3>
+      <div class="ir"><span class="il">Target rooms</span><span class="iv">15–20 rooms</span></div>
+      <div class="ir"><span class="il">Rack rate</span><span class="iv">$450–$600/night (April peak)</span></div>
+      <div class="ir"><span class="il">Negotiated target</span><span class="iv">$360–$510 (15–20% off)</span></div>
+      <div class="ir"><span class="il">Nights</span><span class="iv">2–3 nights (Apr 16–18)</span></div>
+      <div class="ir"><span class="il">Ask for</span><span class="iv">Comp suite + resort fee waiver</span></div>
+    </div>
+    <div class="ic"><h3>Payment Schedule</h3>
+      <div class="ir"><span class="il">Initial deposit</span><span class="iv"><span class="pill pill-rose">$2,500 at signing</span></span></div>
+      <div class="ir"><span class="il">Silver 60-day</span><span class="iv">$6,028.60 · ~Feb 15, 2027</span></div>
+      <div class="ir"><span class="il">Silver final</span><span class="iv">$6,028.60 · ~Mar 17, 2027</span></div>
+      <div class="ir"><span class="il">Gold 60-day</span><span class="iv">$6,804.57 · ~Feb 15, 2027</span></div>
+      <div class="ir"><span class="il">Gold final</span><span class="iv">$6,804.57 · ~Mar 17, 2027</span></div>
+      <div class="ir"><span class="il">PR License</span><span class="iv">$250 · blood tests within 10 days</span></div>
+    </div>
+    <div class="sh mt1"><h2>Negotiate at Site Visit</h2></div>
+    <div class="tip-card"><span class="ti">💰</span><h4>23% Service Fee</h4><p>Above industry norm (18–20%). Even 2–3% off saves $300–$500 on the bill.</p></div>
+    <div class="tip-card"><span class="ti">🍹</span><h4>Bartender Fee ($225)</h4><p>On top of a 23% service charge this is double-dipping. Ask for it absorbed into the package.</p></div>
+    <div class="tip-card"><span class="ti">🥗</span><h4>Custom Hors d'Oeuvres</h4><p>Ask to mix and match between Silver and Gold menus. Low cost to them, big win for you.</p></div>
+    <div class="tip-card"><span class="ti">🛏️</span><h4>Comp Suite + Resort Fee Waiver</h4><p>Standard perk when you're paying 15–20 rooms. Resort fee waiver saves $1,200–$1,800 across all rooms.</p></div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="page" id="page-tips">
+    <div class="sh"><h2>Tips & Best Practices</h2></div>
+    <div class="nb"><strong>Puerto Rico Legal:</strong> Blood tests must be done within 10 days of the ceremony. License fee is $250, paid to the PR Demographic Registry.</div>
+    <div class="sh mt1"><h2>Catering</h2></div>
+    <div class="tip-card"><span class="ti">📋</span><h4>Bring Competing Quotes</h4><p>Get a written quote from Wyndham Grand Rio Mar before the site visit. El Con negotiates harder when they know you have options.</p></div>
+    <div class="tip-card"><span class="ti">🍽️</span><h4>Request a Tasting</h4><p>Ask for a food tasting at the site visit or 45–60 days before. Don't commit to Filet Mignon at $309/person without tasting it.</p></div>
+    <div class="tip-card"><span class="ti">📅</span><h4>April = Peak Season</h4><p>Lock in your contract ASAP — prices increase and availability tightens for prime April dates.</p></div>
+    <div class="tip-card"><span class="ti">👥</span><h4>Duo Entrée Option</h4><p>+$15/person lets guests choose between two mains. For 30 guests that's $450 — removes pressure of a single pre-select.</p></div>
+    <div class="sh mt1"><h2>Room Block</h2></div>
+    <div class="tip-card"><span class="ti">⚠️</span><h4>Attrition Clause</h4><p>If rooms go unused, you can owe 50–80% of the rate per empty room. Push for a courtesy block (no penalty) or 70% attrition threshold.</p></div>
+    <div class="tip-card"><span class="ti">🗓️</span><h4>Later Cutoff Date</h4><p>Standard is 30 days. Push for 45–60 days — reduces financial risk from slow bookings.</p></div>
+    <div class="tip-card"><span class="ti">🎁</span><h4>Perks to Ask For</h4><p>Comp suite, resort fee waiver, one free night per 10 rooms booked, and a hospitality suite for getting ready.</p></div>
+    <div class="sh mt1"><h2>Destination Logistics</h2></div>
+    <div class="tip-card"><span class="ti">✈️</span><h4>No Passport Needed</h4><p>Puerto Rico is U.S. territory — no passport required for American guests. Big plus for attendance.</p></div>
+    <div class="tip-card"><span class="ti">🌤️</span><h4>April Weather</h4><p>Generally dry, 80–85°F. Outdoor events are comfortable. Have a rain contingency in the contract.</p></div>
+    <div class="tip-card"><span class="ti">🏖️</span><h4>El Yunque Day Trip</h4><p>20 min from El Con — great guest activity before or after the wedding. El Con concierge can arrange tours.</p></div>
+    <div class="tip-card"><span class="ti">📸</span><h4>Hire a Local Photographer</h4><p>Local PR photographers know the light and locations — and cost less than mainland photographers with travel fees.</p></div>
+    <div class="tip-card"><span class="ti">🤝</span><h4>Use Local Vendors</h4><p>Local florists, DJs, and bakers offer better value. El Con will provide a preferred vendor list at your site visit.</p></div>
+  </div>
+
+  <!-- NOTES -->
+  <div class="page" id="page-notes">
+    <div class="sh"><h2>Shared Notes</h2></div>
+    <div class="note-compose">
+      <select id="ncat">
+        <option>General</option><option>Catering</option><option>Room Block</option>
+        <option>Negotiate</option><option>Florals</option><option>Music</option>
+        <option>Vendors</option><option>Ideas</option>
+      </select>
+      <textarea id="nnote" placeholder="Add a note, idea, or question…"></textarea>
+      <div class="nbtns">
+        <button class="btn" onclick="addNote()">Save Note</button>
+        <button class="btn btn-out" onclick="document.getElementById('nnote').value=''">Clear</button>
+      </div>
+    </div>
+    <div id="notes-list"><div class="loading-screen"><div class="spin"></div><span>Loading...</span></div></div>
+  </div>
+
+</div><!-- /content -->
+
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <button class="nb-btn active" onclick="showPage('overview',this)"><span class="nb-icon">🏠</span><span class="nb-lbl">Overview</span></button>
+  <button class="nb-btn" onclick="showPage('budget',this)"><span class="nb-icon">💵</span><span class="nb-lbl">Budget</span></button>
+  <button class="nb-btn" onclick="showPage('checklist',this)"><span class="nb-icon">✅</span><span class="nb-lbl">Checklist</span></button>
+  <button class="nb-btn" onclick="showPage('venue',this)"><span class="nb-icon">🏨</span><span class="nb-lbl">Venue</span></button>
+  <button class="nb-btn" onclick="showPage('tips',this)"><span class="nb-icon">💡</span><span class="nb-lbl">Tips</span></button>
+  <button class="nb-btn" onclick="showPage('notes',this)"><span class="nb-icon">📝</span><span class="nb-lbl">Notes</span></button>
+</nav>
+
+</div><!-- /app -->
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// SUPABASE
+const SUPA_URL = 'https://ecvradbgnzhsvlhefiog.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdnJhZGJnbnpoc3ZsaGVmaW9nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5MDkyMDAsImV4cCI6MjA5MDQ4NTIwMH0.UA_p6x4anfwGPq_GmM0U0GnI_qRmD23jf7BmlCNwT4w';
+const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+function setSyncState(s){
+  const d=document.getElementById('syncDot');
+  if(!d)return;
+  d.className='sync-dot '+(s==='sync'?'syncing':s==='ok'?'ok':s==='err'?'error':'');
+}
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// COUNTDOWN
+(function(){
+  const diff=new Date('2027-04-17')-new Date();
+  if(diff<=0)return;
+  const d=Math.floor(diff/864e5);
+  document.getElementById('cd-d').textContent=d;
+  document.getElementById('cd-m').textContent=Math.floor(d/30.44);
+  document.getElementById('cd-w').textContent=Math.floor(d/7);
+})();
+
+// NAV
+function showPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nb-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  document.querySelector('.content').scrollTo(0,0);
+}
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+function $m(v){const n=parseFloat(String(v||0).replace(/[^0-9.-]/g,''));return isNaN(n)?0:n;}
+function fmt(n){return'$'+Math.round(n||0).toLocaleString();}
+
+// OVERVIEW
+let ovDebounce;
+function saveOv(){
+  clearTimeout(ovDebounce);
+  ovDebounce=setTimeout(async()=>{
+    const data={};
+    ['ov1','ov1n','ov2','ov2n','ov3','ov3n','ov4','ov4n'].forEach(id=>{const e=document.getElementById(id);if(e)data[id]=e.value;});
+    setSyncState('sync');
+    const {error}=await sb.from('wedding_data').upsert({key:'overview',value:data},{onConflict:'key'});
+    setSyncState(error?'err':'ok');
+  },800);
+}
+async function loadOv(){
+  const {data}=await sb.from('wedding_data').select('value').eq('key','overview').single();
+  if(data?.value){Object.keys(data.value).forEach(id=>{const e=document.getElementById(id);if(e)e.value=data.value[id];});}
+}
+
+// BUDGET
+const DEFS=[
+  {cat:'Venue & Catering',item:'El Con - Catering Package',low:14557,high:16109,locked:14557,status:'quoted',notes:'Silver $14,557 / Gold $16,109 - decide after site visit'},
+  {cat:'Venue & Catering',item:'Rehearsal Dinner',low:1800,high:3500,locked:1800,status:'estimate',notes:'Resort restaurant or private event'},
+  {cat:'Rooms',item:'Guest Rooms - 15 rooms, 2 nights',low:12000,high:14025,locked:12000,status:'estimate',notes:'~$400-$467/nt negotiated (15-20% off rack). Update once rate locked.'},
+  {cat:'Rooms',item:'Guest Rooms - 20 rooms, 2 nights',low:16000,high:18700,locked:0,status:'estimate',notes:'Scale up if needed. Set locked to $0 if staying at 15 rooms.'},
+  {cat:'Photography',item:'Wedding Photographer',low:2500,high:4500,locked:2500,status:'estimate',notes:'8 hrs; local PR photographer recommended'},
+  {cat:'Photography',item:'Videographer',low:1500,high:3000,locked:1500,status:'estimate',notes:'Optional - highlight reel'},
+  {cat:'Florals & Decor',item:'Ceremony & Reception Florals',low:2000,high:5000,locked:2000,status:'estimate',notes:'Bouquets, centerpieces, ceremony arch'},
+  {cat:'Music',item:'DJ or Live Music',low:1200,high:3000,locked:1200,status:'estimate',notes:'DJ avg $1,500 in PR; get quote'},
+  {cat:'Beauty',item:'Hair & Makeup (bride + party)',low:600,high:1500,locked:600,status:'estimate',notes:'El Con Vita Spa or local artist'},
+  {cat:'Stationery',item:'Invitations, Programs, Signage',low:400,high:1200,locked:400,status:'estimate',notes:'Digital save-the-dates save money'},
+  {cat:'Wedding Cake',item:'Custom Cake (client-provided)',low:500,high:1500,locked:500,status:'estimate',notes:'El Con cutting fee already in catering'},
+  {cat:'Officiant',item:'Wedding Officiant',low:300,high:700,locked:300,status:'estimate',notes:'PR license fee $250 paid separately'},
+  {cat:'Extras',item:'Transportation / Shuttles',low:300,high:800,locked:300,status:'estimate',notes:'Airport runs + on-island logistics'},
+];
+let budget=[];
+let bdgDebounce;
+
+async function loadBudget(){
+  const {data}=await sb.from('wedding_data').select('value').eq('key','budget').single();
+  budget=data?.value||DEFS.map(r=>({...r}));
+  renderBdg();
+}
+async function saveBdg(){
+  clearTimeout(bdgDebounce);
+  bdgDebounce=setTimeout(async()=>{
+    setSyncState('sync');
+    const {error}=await sb.from('wedding_data').upsert({key:'budget',value:budget},{onConflict:'key'});
+    setSyncState(error?'err':'ok');
+  },600);
+}
+function sc(s){return s==='locked'?'sp-l':s==='quoted'?'sp-q':'sp-e';}
+function renderBdg(){
+  const list=document.getElementById('blist');if(!list)return;
+  list.innerHTML=budget.map((r,i)=>`
+    <div class="bcard">
+      <button class="bdel" onclick="delRow(${i})">x</button>
+      <div class="bcard-top">
+        <div class="bcard-meta">
+          <input class="bcat-in" value="${esc(r.cat)}" onchange="upd(${i},'cat',this.value)">
+          <input class="bitem-in" value="${esc(r.item)}" onchange="upd(${i},'item',this.value)">
+        </div>
+        <select class="spill ${sc(r.status)}" onchange="upd(${i},'status',this.value);this.className='spill '+sc(this.value);">
+          <option value="estimate" ${r.status==='estimate'?'selected':''}>Estimate</option>
+          <option value="quoted" ${r.status==='quoted'?'selected':''}>Quoted</option>
+          <option value="locked" ${r.status==='locked'?'selected':''}>Locked</option>
+        </select>
+      </div>
+      <div class="bamts">
+        <div class="af"><span class="af-lbl">Low</span><input class="af-in" value="${fmt(r.low)}" onchange="updm(${i},'low',this.value)" inputmode="numeric"></div>
+        <div class="af"><span class="af-lbl">High</span><input class="af-in" value="${fmt(r.high)}" onchange="updm(${i},'high',this.value)" inputmode="numeric"></div>
+        <div class="af"><span class="af-lbl">Locked $</span><input class="af-in ${r.status==='locked'?'locked':''}" value="${fmt(r.locked)}" onchange="updm(${i},'locked',this.value)" inputmode="numeric" placeholder="-"></div>
+      </div>
+      <input class="bnotes" value="${esc(r.notes)}" onchange="upd(${i},'notes',this.value)" placeholder="Notes">
+    </div>`).join('');
+  calcTotals();
+  const b=document.getElementById('b-badge');if(b)b.textContent=budget.length+' items';
+}
+function upd(i,f,v){budget[i][f]=v;saveBdg();if(f==='status')renderBdg();}
+function updm(i,f,v){budget[i][f]=$m(v);saveBdg();calcTotals();}
+function calcTotals(){
+  let comm=0,lo=0,hi=0;
+  budget.forEach(r=>{if(r.status==='locked'||r.status==='quoted')comm+=$m(r.locked);lo+=$m(r.low);hi+=$m(r.high);});
+  const t1=document.getElementById('tb1');const t2=document.getElementById('tb2');
+  if(t1)t1.textContent=fmt(comm);if(t2)t2.textContent=fmt(lo)+' - '+fmt(hi);
+}
+function addRow(){
+  budget.push({cat:'New',item:'New item',low:0,high:0,locked:0,status:'estimate',notes:''});
+  saveBdg();renderBdg();
+  const l=document.getElementById('blist');if(l&&l.lastElementChild)l.lastElementChild.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function delRow(i){if(!confirm('Remove "'+budget[i].item+'"?'))return;budget.splice(i,1);saveBdg();renderBdg();}
+function resetBudget(){if(!confirm('Reset to default estimates?'))return;budget=DEFS.map(r=>({...r}));saveBdg();renderBdg();}
+
+// CHECKLIST
+const PHASES=[
+  {title:'Now to Site Visit',items:[
+    {text:'Confirm site visit date with Zoraida Garcia',p:'pu'},
+    {text:'Get competing quote from Wyndham Grand Rio Mar',p:'pu'},
+    {text:'Decide Silver vs Gold (or negotiate hybrid menu)',p:'ph'},
+    {text:'Research wedding photographers in Puerto Rico',p:'ph'},
+    {text:'Send save-the-dates (12-18 months out ideal)',p:'ph'},
+    {text:'Set overall budget and priority areas',p:'pn'},
+  ]},
+  {title:'After Site Visit - Contract',items:[
+    {text:'Sign El Con catering contract (negotiate fees)',p:'pu'},
+    {text:'Pay $2,500 initial deposit',p:'pu'},
+    {text:'Negotiate room block (15-20 rms, 15-20% off rack)',p:'pu'},
+    {text:'Get comp bridal suite + resort fee waiver',p:'ph'},
+    {text:'Book photographer',p:'ph'},
+    {text:'Book DJ or live music',p:'ph'},
+    {text:'Book officiant / confirm PR license requirements',p:'ph'},
+    {text:'Start wedding website (The Knot, Zola, etc.)',p:'pn'},
+  ]},
+  {title:'6-9 Months Out',items:[
+    {text:'Pre-select entree, salad, soup (required by El Con)',p:'ph'},
+    {text:'Finalize hors doeuvres (negotiate custom mix)',p:'ph'},
+    {text:'Order wedding invitations (send 8 weeks out)',p:'pn'},
+    {text:'Book florist',p:'pn'},
+    {text:'Plan rehearsal dinner venue',p:'pn'},
+    {text:'Book airport transportation and shuttles',p:'pn'},
+  ]},
+  {title:'3-4 Months Out',items:[
+    {text:'Pay 60-day deposit (~$6,029-$6,805)',p:'pu'},
+    {text:'Confirm final guest count with El Con',p:'ph'},
+    {text:'Collect RSVPs + meal selections from guests',p:'ph'},
+    {text:'Schedule food tasting at El Con (45-60 days prior)',p:'ph'},
+    {text:'Order wedding cake / connect with bakery',p:'pn'},
+    {text:'Buy wedding rings',p:'pn'},
+    {text:'Begin PR marriage license process',p:'ph'},
+  ]},
+  {title:'Final Month',items:[
+    {text:'Pay final balance to El Con (30 days prior)',p:'pu'},
+    {text:'Confirm all vendor day-of timelines',p:'ph'},
+    {text:'Blood tests for PR marriage license (within 10 days!)',p:'pu'},
+    {text:'Confirm seating chart with El Con catering',p:'pn'},
+    {text:'Write vows',p:'pn'},
+    {text:'Pack and travel - enjoy every moment!',p:'pn'},
+  ]},
+];
+let checks={};
+let chkDebounce;
+
+async function loadChecks(){
+  const {data}=await sb.from('wedding_data').select('value').eq('key','checks').single();
+  checks=data?.value||{};
+  renderChecklist();
+}
+function renderChecklist(){
+  const wrap=document.getElementById('checklist-wrap');if(!wrap)return;
+  wrap.innerHTML=PHASES.map((ph,pi)=>{
+    const total=ph.items.length;
+    const done=ph.items.filter((_,ii)=>checks[pi+'-'+ii]).length;
+    return '<div class="phase-block"><div class="phase-hd '+(pi===0?'open':'')+'" onclick="togglePhase(this)"><h3>'+ph.title+'</h3><span class="phase-prog" id="prog-'+pi+'">'+done+'/'+total+'</span><span class="phase-chev">v</span></div><div class="phase-items '+(pi===0?'open':'')+'" id="phase-'+pi+'">'+
+    ph.items.map((it,ii)=>'<label class="ci"><input type="checkbox" '+(checks[pi+'-'+ii]?'checked':'')+' onchange="toggleCheck('+pi+','+ii+',this.checked)"><label>'+it.text+'</label><span class="cp '+it.p+'">'+(it.p==='pu'?'Urgent':it.p==='ph'?'High':'Normal')+'</span></label>').join('')+
+    '</div></div>';
+  }).join('');
+}
+function toggleCheck(pi,ii,val){
+  checks[pi+'-'+ii]=val;
+  const ph=PHASES[pi];
+  const done=ph.items.filter((_,i2)=>checks[pi+'-'+i2]).length;
+  const el=document.getElementById('prog-'+pi);
+  if(el)el.textContent=done+'/'+ph.items.length;
+  clearTimeout(chkDebounce);
+  chkDebounce=setTimeout(async()=>{
+    setSyncState('sync');
+    const {error}=await sb.from('wedding_data').upsert({key:'checks',value:checks},{onConflict:'key'});
+    setSyncState(error?'err':'ok');
+  },600);
+}
+function togglePhase(hd){
+  const items=hd.nextElementSibling;
+  const open=items.classList.contains('open');
+  items.classList.toggle('open',!open);
+  hd.classList.toggle('open',!open);
+}
+
+// NOTES
+let notes=[];
+async function loadNotes(){
+  const {data}=await sb.from('wedding_notes').select('*').order('created_at',{ascending:false});
+  notes=data||[];
+  if(!notes.length){
+    const starters=[
+      {cat:'Negotiate',body:"Mix hors doeuvres between Silver and Gold packages at site visit."},
+      {cat:'Catering',body:'23% service fee is high - push for reduction. Also ask about bartender fee waiver.'},
+      {cat:'Room Block',body:'We are paying all rooms. Target 15-20% off rack rate. Push hard for resort fee waiver and comp suite.'},
+    ];
+    for(const s of starters) await sb.from('wedding_notes').insert({cat:s.cat,body:s.body});
+    const {data:d2}=await sb.from('wedding_notes').select('*').order('created_at',{ascending:false});
+    notes=d2||[];
+  }
+  renderNotes();
+  sb.channel('notes-rt').on('postgres_changes',{event:'*',schema:'public',table:'wedding_notes'},async()=>{
+    const {data}=await sb.from('wedding_notes').select('*').order('created_at',{ascending:false});
+    notes=data||[];renderNotes();
+  }).subscribe();
+}
+function renderNotes(){
+  const list=document.getElementById('notes-list');if(!list)return;
+  if(!notes.length){list.innerHTML='<p style="color:var(--muted);font-size:0.8rem;padding:0.5rem 0;">No notes yet.</p>';return;}
+  list.innerHTML=notes.map(n=>'<div class="ne"><div class="ne-meta"><span class="pill pill-gold">'+esc(n.cat)+'</span> - '+new Date(n.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+'</div><div>'+esc(n.body)+'</div><button class="del-note" onclick="delNote(''+n.id+'')">x</button></div>').join('');
+}
+async function addNote(){
+  const body=document.getElementById('nnote').value.trim();
+  const cat=document.getElementById('ncat').value;
+  if(!body)return;
+  setSyncState('sync');
+  const {error}=await sb.from('wedding_notes').insert({cat,body});
+  setSyncState(error?'err':'ok');
+  if(!error){
+    document.getElementById('nnote').value='';
+    const {data}=await sb.from('wedding_notes').select('*').order('created_at',{ascending:false});
+    notes=data||[];renderNotes();
+  }
+}
+async function delNote(id){
+  if(!confirm('Delete this note?'))return;
+  setSyncState('sync');
+  await sb.from('wedding_notes').delete().eq('id',id);
+  setSyncState('ok');
+  notes=notes.filter(n=>n.id!==id);renderNotes();
+}
+
+// REALTIME
+function subscribeShared(){
+  sb.channel('wedding-data-rt').on('postgres_changes',{event:'*',schema:'public',table:'wedding_data'},payload=>{
+    const {key,value}=payload.new||{};
+    if(key==='budget'&&value){budget=value;renderBdg();}
+    if(key==='checks'&&value){checks=value;renderChecklist();}
+    if(key==='overview'&&value){Object.keys(value).forEach(id=>{const e=document.getElementById(id);if(e&&document.activeElement!==e)e.value=value[id];});}
+  }).subscribe();
+}
+
+// INIT
+(async function init(){
+  setSyncState('sync');
+  try{
+    await Promise.all([loadOv(),loadBudget(),loadChecks(),loadNotes()]);
+    subscribeShared();
+    setSyncState('ok');
+  }catch(e){
+    setSyncState('err');
+    toast('Sync error');
+  }
+})();
+</script>
+</body>
+</html>
