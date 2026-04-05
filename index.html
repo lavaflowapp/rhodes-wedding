@@ -456,14 +456,25 @@ body {
   <button class="nb-btn" onclick="showPage('notes',this)"><span class="nb-icon">📝</span><span class="nb-lbl">Notes</span></button>
 </nav>
 
+<div id="toast" style="position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--deep);color:white;padding:0.5rem 1.2rem;border-radius:8px;font-size:0.8rem;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:1000;"></div>
 </div><!-- /app -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
+// NAV — defined first so buttons always work
+function showPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nb-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  document.querySelector('.content').scrollTo(0,0);
+}
+
 // SUPABASE
 const SUPA_URL = 'https://ecvradbgnzhsvlhefiog.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdnJhZGJnbnpoc3ZsaGVmaW9nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5MDkyMDAsImV4cCI6MjA5MDQ4NTIwMH0.UA_p6x4anfwGPq_GmM0U0GnI_qRmD23jf7BmlCNwT4w';
-const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+let sb;
+try { sb = supabase.createClient(SUPA_URL, SUPA_KEY); } catch(e) { console.error('Supabase init failed:', e); }
 
 function setSyncState(s){
   const d=document.getElementById('syncDot');
@@ -472,8 +483,9 @@ function setSyncState(s){
 }
 function toast(msg){
   const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
+  if(!t)return;
+  t.textContent=msg;t.style.opacity='1';
+  setTimeout(()=>{t.style.opacity='0';},2500);
 }
 
 // COUNTDOWN
@@ -485,15 +497,6 @@ function toast(msg){
   document.getElementById('cd-m').textContent=Math.floor(d/30.44);
   document.getElementById('cd-w').textContent=Math.floor(d/7);
 })();
-
-// NAV
-function showPage(id,btn){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nb-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  if(btn)btn.classList.add('active');
-  document.querySelector('.content').scrollTo(0,0);
-}
 
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
 function $m(v){const n=parseFloat(String(v||0).replace(/[^0-9.-]/g,''));return isNaN(n)?0:n;}
@@ -734,12 +737,14 @@ function subscribeShared(){
 
 // INIT
 (async function init(){
+  if(!sb){setSyncState('err');toast('Database unavailable');return;}
   setSyncState('sync');
   try{
     await Promise.all([loadOv(),loadBudget(),loadChecks(),loadNotes()]);
     subscribeShared();
     setSyncState('ok');
   }catch(e){
+    console.error('Init error:', e);
     setSyncState('err');
     toast('Sync error');
   }
