@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-white text-ink font-sans antialiased;
+}
+
+h1, h2, h3, h4 {
+  @apply font-serif text-ink;
+}
+
+a {
+  @apply text-fuchsia hover:text-coral transition-colors;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center rounded-full bg-coral px-6 py-3 text-white font-medium shadow-sm hover:bg-fuchsia transition-colors;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center rounded-full bg-white text-coral border border-coral px-6 py-3 font-medium hover:bg-cream transition-colors;
+}
+
+.accent-rule {
+  @apply h-px w-16 bg-blush mx-auto my-6;
+}
+
+@media print {
+  nav, footer, .no-print { display: none !important; }
+  body { @apply bg-white; }
+  main { @apply max-w-none p-0; }
+  .print-section { break-inside: avoid; }
+}
