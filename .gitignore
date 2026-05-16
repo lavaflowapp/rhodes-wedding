@@ -8,3 +8,7 @@ out
 *.log
 .vercel
 *.tsbuildinfo
+
+# Private wedding planning docs (contracts, vendor pricing, PDFs).
+# Stays local; never pushed to GitHub.
+planning/

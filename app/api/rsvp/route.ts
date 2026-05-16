@@ -12,6 +12,8 @@ export async function POST(req: NextRequest) {
     attending: body.attending === "yes",
     party_size: Number(body.party_size) || 1,
     meal: String(body.meal || ""),
+    song_1: String(body.song_1 || "").trim(),
+    song_2: String(body.song_2 || "").trim(),
     message: String(body.message || ""),
     created_at: new Date().toISOString(),
   };

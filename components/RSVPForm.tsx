@@ -78,6 +78,17 @@ export function RSVPForm() {
         </select>
       </div>
 
+      <fieldset className="bg-cream/60 border border-sand rounded-xl p-4 space-y-3">
+        <legend className="px-2 text-sm font-medium text-ink">
+          🎵 Help build the playlist
+        </legend>
+        <p className="text-xs text-ink/60 -mt-1">
+          Suggest a song or two you&apos;d love to hear on the dance floor.
+        </p>
+        <Field label="Song 1 (song title — artist)" name="song_1" placeholder="e.g. September — Earth, Wind & Fire" />
+        <Field label="Song 2 (optional)" name="song_2" placeholder="e.g. Suavemente — Elvis Crespo" />
+      </fieldset>
+
       <div>
         <label htmlFor="message" className="block text-sm font-medium text-ink mb-2">Note to the couple (optional)</label>
         <textarea
@@ -105,6 +116,7 @@ function Field({
   defaultValue,
   min,
   max,
+  placeholder,
 }: {
   label: string;
   name: string;
@@ -113,6 +125,7 @@ function Field({
   defaultValue?: string;
   min?: number;
   max?: number;
+  placeholder?: string;
 }) {
   return (
     <div>
@@ -128,7 +141,8 @@ function Field({
         defaultValue={defaultValue}
         min={min}
         max={max}
-        className="w-full border border-sand rounded-lg px-3 py-2 focus:outline-none focus:border-coral"
+        placeholder={placeholder}
+        className="w-full border border-sand rounded-lg px-3 py-2 focus:outline-none focus:border-coral placeholder:text-ink/30"
       />
     </div>
   );
