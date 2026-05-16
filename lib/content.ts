@@ -69,15 +69,19 @@ export const content = {
   honeyfund: {
     intro:
       "Your presence means the world to us. If you'd like to contribute toward our honeymoon, we'd be so grateful — every bit helps make our trip unforgettable.",
-    // Items below become Stripe Checkout tiles. Add/remove freely.
-    tiles: [
-      { id: "catamaran", title: "Sunset Catamaran", amount: 75, emoji: "⛵", description: "An evening on the water during our honeymoon." },
-      { id: "dinner", title: "Romantic Dinner", amount: 100, emoji: "🍽️", description: "A special dinner for two." },
-      { id: "spa", title: "Couples Spa Day", amount: 150, emoji: "💆", description: "Help us unwind after the wedding." },
-      { id: "excursion", title: "Island Excursion", amount: 200, emoji: "🏝️", description: "A day of adventure exploring." },
-      { id: "upgrade", title: "Flight Upgrade", amount: 250, emoji: "✈️", description: "Make the journey extra comfortable." },
-      { id: "stay", title: "One Night's Stay", amount: 350, emoji: "🌅", description: "Help us extend our trip by a night." },
-    ],
+    // Primary CTA — link to your Zola / Honeyfund / Knot honeymoon fund page.
+    // TODO: replace # with your real honeyfund URL after signing up.
+    primaryUrl: "#",
+    primaryLabel: "Contribute to Our Honeymoon Fund",
+    primaryNote: "Credit/debit cards accepted",
+  },
+
+  // Person-to-person payment links for guests who'd rather use an app they already have.
+  // TODO: fill in your real handles. Leave any field blank ("") to hide that button.
+  p2p: {
+    venmo: "",   // e.g. "aaron-rhodes" — link becomes https://venmo.com/u/<handle>
+    paypal: "",  // e.g. "aaronrhodes" — link becomes https://paypal.me/<handle>
+    zelle: "",   // shown as text (Zelle has no public link spec): your email or phone
   },
 
   registry: {
